@@ -45,16 +45,25 @@ DIR2=${DATE2:0:8}
 mkdir $OUTPUT_DIR
 cd $OUTPUT_DIR
 
+if [ -z "$FILTER_MODE" ]; then
+	FILTER_MODE="2"
+fi
 if [ -z "$RM_QUANT_PC" ]; then
 	RM_QUANT_PC="0.85"
+fi
+if [ -z "$RM_MIN_MATCHES" ]; then
+	RM_MIN_MATCHES="60"
+fi
+if [ -z "$RM_THRESHOLD" ]; then
+	RM_THRESHOLD="3"
 fi
 
 session=" -t $SESSION_TYPE --individually-normalize --alignment-method $A_M --threads-multiprocess $THREADS --process $THREADS --no-bigtiff --tif-compress Deflate "
 stereo="--corr-kernel $CORR_KERNEL --cost-mode $COST_MODE --stereo-algorithm $ST_ALG --corr-tile-size $CORR_T_S --subpixel-mode $SUBP_MODE --subpixel-kernel $SUBP_KERNEL --corr-seed-mode $CORR_S_MODE --corr-sub-seed-percent $CORR_S_MODE_PERC --xcorr-threshold $XCORR_TH --min-xcorr-level $MIN_XCORR_LVL --sgm-collar-size $SGM_C_SIZE "
-denoising="--rm-quantile-multiple $RM_QUANT_MULT --filter-mode $FILTER_MODE --rm-quantile-percentile $RM_QUANT_PC " 
+denoising="--rm-quantile-multiple $RM_QUANT_MULT --filter-mode $FILTER_MODE --rm-quantile-percentile $RM_QUANT_PC --rm-min-matches $RM_MIN_MATCHES --rm-threshold $RM_THRESHOLD" 
 filtering="--median-filter-size $MED_FILTER_SIZE --texture-smooth-size $TEXT_SMOOTH_SIZE --texture-smooth-scale $TEXT_SMOOTH_SCALE"
 
-parallel_stereo $session $IMG1_CROP $IMG2_CROP $BLACK_LEFT $BLACK_RIGHT $OUTPUT_DIR $stereo $denoising $filtering  
+parallel_stereo $session $IMG1 $IMG2 $BLACK_LEFT $BLACK_RIGHT $OUTPUT_DIR $stereo $denoising $filtering  
 gdal_translate -q -b 1 -co COMPRESS=LZW $OUTPUT_DIR-F.tif WE_"$BAND"_"$DIR1"_"$DIR2"_filter.tif
 gdal_translate -q -b 2 -co COMPRESS=LZW $OUTPUT_DIR-F.tif NS_"$BAND"_"$DIR1"_"$DIR2"_filter.tif
 gdal_translate -q -b 3  $OUTPUT_DIR-F.tif CC_"$BAND"_"$DIR1"_"$DIR2"_filter.tif
