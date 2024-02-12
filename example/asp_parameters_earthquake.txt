@@ -1,0 +1,46 @@
+#####################
+# GENERAL VARIABLES #
+#####################
+
+THREADS="5"
+HOME="/data/processing/ASP-Optic/ridgecrest"
+BLACK_LEFT="$ASPOPT/contrib/data/black_left.tsai"
+BLACK_RIGHT="$ASPOPT/contrib/data/black_right.tsai"
+OUTPUT_DIR="corr-mgm" #creates dir within working dir - every created dataset starts with 
+
+####################
+# SET INPUT IMAGES #
+####################
+
+DATES1=("20190628T182929")
+DATES2=("20190708T182929")
+BANDS=("B04")
+
+###################
+# STEREO SETTINGS #
+###################
+
+SESSION_TYPE="nadirpinhole" # -t
+A_M="none" # --alignment-method
+NO_DATA_S="none" # --nodata_value stereo
+CORR_KERNEL="9 9" # --corr_kernel
+COST_MODE="3" # --cost-mode # 4 is better in texture less images as for SAR data
+ST_ALG="asp_mgm" # --stereo_algorithm
+SUBP_MODE="2" # --subpixel-mode
+SUBP_KERNEL="7 7" # --subpixel-kernel
+CORR_S_MODE="1" # --corr_seed_mode
+CORR_S_MODE_PERC="3" # --corr-sub-seed-percent
+XCORR_TH="2.0" # --xcorr-threshold
+MIN_XCORR_LVL="0" # --min-xcorr-level
+SGM_C_SIZE="512" # --sgm-collar-size
+CORR_T_S="1024" # --corr-tile-size
+
+#DENOISING#
+RM_QUANT_MULT=1 # --rm-quantile-multiple: default: -1 -> filter-mode=2, rm-min-matches=60, rm-threshold=3; 1 -> use rm-quantile, no rm_min_match, no rm-threshold
+FILTER_MODE=2 # --filter-mode (1: use mean difference, default: 2, use threshold & min_matches (higher filtering) )
+
+# Filtering #
+MED_FILTER_SIZE="3" # --median-filter-size: Filter subpixel results with a median
+TEXT_SMOOTH_SIZE="13" # --texture-smooth-size: Kernel size to perform texture aware disparity smoothing
+TEXT_SMOOTH_SCALE="0.13" #--texture-smooth-scale # range of 0.13 to 0.15 is typical
+

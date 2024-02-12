@@ -1,0 +1,12 @@
+#%Module
+set prefix /data/soft/ASP-OPT/
+set exec_prefix ${prefix}
+
+if { [module-info mode load] } {
+    if { [is-loaded otb] } { module unload otb }
+    if { ! [is-loaded asp] } { module load asp}
+    if { [is-loaded micmac] } { module unload micmac }
+}
+
+setenv ASPOPT           $prefix
+prepend-path PATH  $prefix
