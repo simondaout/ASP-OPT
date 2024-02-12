@@ -38,6 +38,7 @@ CORR_T_S="1024" # --corr-tile-size
 #DENOISING#
 RM_QUANT_MULT=1 # --rm-quantile-multiple: default: -1 -> filter-mode=2, rm-min-matches=60, rm-threshold=3; 1 -> use rm-quantile, no rm_min_match, no rm-threshold
 FILTER_MODE=2 # --filter-mode (1: use mean difference, default: 2, use threshold & min_matches (higher filtering) )
+RM_QUANT_PC=0.7 # Disparities greater than quantile multiple times the quantile percentile (of the histogram) will be discarded.
 
 # Filtering #
 MED_FILTER_SIZE="3" # --median-filter-size: Filter subpixel results with a median
